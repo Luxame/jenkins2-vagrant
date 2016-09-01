@@ -144,17 +144,17 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", inline: <<-SHELL
     # 安裝 node 請用完整版本號碼，使用 v5.12.0 而不是 v5
     sudo su - jenkins -l -c 'wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.31.1/install.sh | bash'
-    sudo su - jenkins -l -c '. ~/.nvm/nvm.sh && nvm install v5.12.0 && nvm alias default v5.12.0 && npm install pm2 -g'
+    sudo su - jenkins -l -c '. ~/.nvm/nvm.sh && nvm install v5.12.0 && nvm use v5.12.0 && nvm alias default v5.12.0 && npm install pm2 -g'
 
     sudo su - user -l -c 'wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.31.1/install.sh | bash'
-    sudo su - user -l -c '. ~/.nvm/nvm.sh && nvm install v5.12.0 && nvm alias default v5.12.0 && npm install pm2 -g'
+    sudo su - user -l -c '. ~/.nvm/nvm.sh && nvm install v5.12.0 && nvm use v5.12.0 && nvm alias default v5.12.0 && npm install pm2 -g'
   SHELL
 
 
   config.vm.provision "shell", inline: <<-SHELL
 
     sudo su - user -l -c 'wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.31.1/install.sh | bash'
-    sudo su - user -l -c '. ~/.nvm/nvm.sh && nvm install v4.4.7 && nvm install v5.12.0 && nvm use v5.12.0 && nvm alias default v5.12.0 && npm install pm2 -g && npm install hexo-cli -g && npm install -g react-native-cli'
+    sudo su - user -l -c '. ~/.nvm/nvm.sh && nvm install v4.4.7 && nvm install v5.12.0 && nvm use v5.12.0 && nvm alias default v5.12.0 && npm install pm2 -g && npm install hexo-cli -g && npm install react-native-cli -g'
     sudo su - user -l -c '. ~/.nvm/nvm.sh && pm2 set pm2-webshell:port 9082 && pm2 install pm2-webshell'
 
     sudo su - user -l -c 'git clone https://github.com/agileworks-tw/pm2-webshell.git'
@@ -198,9 +198,10 @@ Vagrant.configure(2) do |config|
     sudo su - user -c 'sudo tar zxvf android-sdk-linux.tgz'
     sudo apt-get -y install ib32z1
     sudo apt-get -y install lib32stdc++6
-    sudo su - user -c 'echo "export JAVA_HOME=/usr/lib/jvm/java-8-oracle" >> ~/.bashrc && source ~/.bashrc'
-    sudo su - user -c 'echo "export PATH=${PATH}:$JAVA_HOME/bin" >> ~/.bashrc && source ~/.bashrc'
-    sudo su - user -c 'echo "export CLASSPATH=.:$JAVA_HOME/lib" >> ~/.bashrc && source ~/.bashrc'
+    # Java 環境變數會影響當下使用的 node 版本，造成安裝的套件無法使用，問題還未解決
+    # sudo su - user -c 'echo "export JAVA_HOME=/usr/lib/jvm/java-8-oracle" >> ~/.bashrc && source ~/.bashrc'
+    # sudo su - user -c 'echo "export PATH=$JAVA_HOME/bin:$PATH" >> ~/.bashrc && source ~/.bashrc'
+    # sudo su - user -c 'echo "export CLASSPATH=$JAVA_HOME/lib" >> ~/.bashrc && source ~/.bashrc'
     sudo su - user -c 'echo "export ANDROID_HOME=$HOME/android-sdk-linux" >> ~/.bashrc && source ~/.bashrc'
     sudo su - user -c 'echo "export PATH=${PATH}:$HOME/android-sdk-linux/platform-tools:$HOME/android-sdk-linux/tools" >> ~/.bashrc && source ~/.bashrc'
   SHELL1
